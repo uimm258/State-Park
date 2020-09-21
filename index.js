@@ -17,10 +17,16 @@ output:
 
 const apiKey = 'mOd8nIn88m6LdXLugAOLVgm0VcTkfP73NceFHAzL';
 
-const searchURL = 'https://developer.nps.gov/api/v1/parks?stateCode=CA&limit=50&start=0&api_key=mOd8nIn88m6LdXLugAOLVgm0VcTkfP73NceFHAzL'
 
 //it fetch info from the url
 function getParkInfo(){
+  let statecode = $("#states").val();
+  let maxresults = $("#maxresults").val();
+
+  let searchURL = `https://developer.nps.gov/api/v1/parks?stateCode=${statecode}&limit=${maxresults}&start=0&api_key=mOd8nIn88m6LdXLugAOLVgm0VcTkfP73NceFHAzL`
+
+
+
   fetch(searchURL)
    .then(response => response.json())
    .then(responseJson => displayResults(responseJson))
@@ -49,10 +55,10 @@ function displayResults(responseJson) {
   
   responseJson.data.forEach(result => {
     results +=
-    `<li value="${result}">
-      <h3>State Name</h3>
-      <p>Park Description</p>
-      <a href='${responseJson.searchURL}'></a>
+    `<li>
+      <h3>${result.fullName}</h3>
+      <p>Park Description ${result.description}</p>
+      <a href='${result.url}'> Click this</a>
     </li>`
   });
   //display the results section  
@@ -72,5 +78,5 @@ function watchForm() {
 
 $(function() {
   console.log('App loaded! Waiting for submit!');
-  displayResults();
+  getArrayState();
 });
